@@ -22,7 +22,7 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
-        BaseResponse baseResponse = new BaseResponse<>();
+        BaseResponse<Object> baseResponse = new BaseResponse<>();
 
         baseResponse.setData(body);
 

@@ -1,0 +1,58 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cs201.sendo.mappers.ProductRepository">
+    <select id="getProductCountByCategory" resultType="Long">
+
+        select count(*)
+        from product
+        <where>
+            <if test="cate1 != null">cat_lv1_id = #{cate1} and</if>
+            <if test="cate2 != null">cat_lv2_id = #{cate2} and </if>
+            <if test="cate3 != null">cat_lv3_id = #{cate3}</if>
+        </where>
+    </select>
+
+    <select id="getListProductByCategory" resultType="com.cs201.sendo.models.Product">
+        select product_id as productId,
+        sd_product_id as sdProductId,
+        cat_lv1_id as catLv1Id,
+        cat_lv2_id as catLv2Id,
+        cat_lv3_id as catLv3Id,
+        path_name as pathName,
+        alter_href as alterHref
+        from product
+        <where>
+            <if test="cate1 != null">cat_lv1_id = #{cate1} and</if>
+            <if test="cate2 != null">cat_lv2_id = #{cate2} and </if>
+            <if test="cate3 != null">cat_lv3_id = #{cate3}</if>
+        </where>
+        <if test="pagingParams != null">
+            limit ${pagingParams.size}
+            offset ${pagingParams.offset}
+        </if>
+        <if test="pagingParams == null">
+            limit 20
+        </if>
+    </select>
+
+    <select id="getRandomProduct" resultType="com.cs201.sendo.models.Product">
+        select product_id as productId,
+        sd_product_id as sdProductId,
+        cat_lv1_id as catLv1Id,
+        cat_lv2_id as catLv2Id,
+        cat_lv3_id as catLv3Id,
+        path_name as pathName,
+        alter_href as alterHref
+        from product
+        order by RAND()
+        <if test="pagingParams != null">
+            limit ${pagingParams.size}
+            offset ${pagingParams.offset}
+        </if>
+        <if test="pagingParams == null">
+            limit 20
+        </if>
+    </select>
+</mapper>
+
