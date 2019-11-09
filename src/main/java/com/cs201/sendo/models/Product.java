@@ -13,4 +13,5 @@ public class Product {
     private Long catLv3Id;
     private String pathName;
     private String alterHref;
+    private int order;
 }

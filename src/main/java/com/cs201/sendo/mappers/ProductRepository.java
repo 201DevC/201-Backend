@@ -13,10 +13,19 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ProductRepository {
-    Long getProductCountByCategory(@Param("cate1") Long cate1, @Param("cate2") Long cate2, @Param("cate3") Long cate3);
+
+    Long getProductCountByCategory(@Param("cate1") Long cate1, @Param("cate2") Long cate2, @Param("cate3") Long cate3,
+                                   @Param("keyword") String keyword);
 
     List<Product> getListProductByCategory(@Param("cate1") Long cate1, @Param("cate2") Long cate2,
-                                           @Param("cate3") Long cate3, @Param("pagingParams") PagingParams pagingParams);
+                                           @Param("cate3") Long cate3, @Param("pagingParams") PagingParams pagingParams,
+                                           @Param("keyword") String keyword);
 
     List<Product> getRandomProduct(PagingParams params);
+
+    List<Product> getListRelatedProduct(@Param("productId") Long productId);
+
+    List<Product> getTrendingProducts();
+
+    Product getProductById(@Param("productId") Long productId);
 }

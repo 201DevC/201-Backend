@@ -32,4 +32,32 @@ public class CategoryController {
 
         return categoryService.getListCategoryLv1(params);
     }
+
+    @GetMapping("/lv2")
+    @ApiOperation(value = "Lấy danh sách category level 2. Các param truyền lên đều optional")
+    public Paging<Category> getCategoryLv2(@RequestParam(value = "page", required = false) Long page,
+                                           @RequestParam(value = "size", required = false) Long size,
+                                           @RequestParam(value = "offset", required = false) Long offset,
+                                           @RequestParam(value = "parentId", required = false) Long parentId) {
+        PagingParams params = null;
+        if (size != null && page != null && offset != null) {
+            params = PagingParams.builder().size(size).page(page).offset(offset).build();
+        }
+
+        return categoryService.getListCategoryLv2(params, parentId);
+    }
+
+    @GetMapping("/lv3")
+    @ApiOperation(value = "Lấy danh sách category level 3. Các param truyền lên đều optional")
+    public Paging<Category> getCategoryLv3(@RequestParam(value = "page", required = false) Long page,
+                                           @RequestParam(value = "size", required = false) Long size,
+                                           @RequestParam(value = "offset", required = false) Long offset,
+                                           @RequestParam(value = "parentId", required = false) Long parentId) {
+        PagingParams params = null;
+        if (size != null && page != null && offset != null) {
+            params = PagingParams.builder().size(size).page(page).offset(offset).build();
+        }
+
+        return categoryService.getListCategoryLv3(params, parentId);
+    }
 }

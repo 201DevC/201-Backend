@@ -7,8 +7,6 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class Data{
 
-	@JsonProperty("brand_info")
-	private List<Object> brandInfo;
 
 	@JsonProperty("voucher")
 	private Voucher voucher;
@@ -97,9 +95,6 @@ public class Data{
 	@JsonProperty("status")
 	private int status;
 
-	@JsonProperty("installment_label")
-	private String installmentLabel;
-
 	@JsonProperty("is_config_variant")
 	private boolean isConfigVariant;
 
@@ -166,6 +161,9 @@ public class Data{
 	@JsonProperty("has_options")
 	private boolean hasOptions;
 
+	@JsonProperty("is_installment")
+	private boolean isInstallment;
+
 	@JsonProperty("url_key")
 	private String urlKey;
 
@@ -186,17 +184,6 @@ public class Data{
 
 	@JsonProperty("is_shop_ads")
 	private int isShopAds;
-
-	@JsonProperty("flash_sale")
-	private List<Object> flashSale;
-
-	public void setBrandInfo(List<Object> brandInfo){
-		this.brandInfo = brandInfo;
-	}
-
-	public List<Object> getBrandInfo(){
-		return brandInfo;
-	}
 
 	public void setVoucher(Voucher voucher){
 		this.voucher = voucher;
@@ -430,14 +417,6 @@ public class Data{
 		return status;
 	}
 
-	public void setInstallmentLabel(String installmentLabel){
-		this.installmentLabel = installmentLabel;
-	}
-
-	public String getInstallmentLabel(){
-		return installmentLabel;
-	}
-
 	public void setIsConfigVariant(boolean isConfigVariant){
 		this.isConfigVariant = isConfigVariant;
 	}
@@ -614,6 +593,14 @@ public class Data{
 		return hasOptions;
 	}
 
+	public void setIsInstallment(boolean isInstallment){
+		this.isInstallment = isInstallment;
+	}
+
+	public boolean isIsInstallment(){
+		return isInstallment;
+	}
+
 	public void setUrlKey(String urlKey){
 		this.urlKey = urlKey;
 	}
@@ -670,19 +657,10 @@ public class Data{
 		return isShopAds;
 	}
 
-	public void setFlashSale(List<Object> flashSale){
-		this.flashSale = flashSale;
-	}
-
-	public List<Object> getFlashSale(){
-		return flashSale;
-	}
-
 	@Override
  	public String toString(){
 		return 
-			"Data{" + 
-			"brand_info = '" + brandInfo + '\'' + 
+			"Data{" +
 			",voucher = '" + voucher + '\'' + 
 			",total_comment = '" + totalComment + '\'' + 
 			",variants = '" + variants + '\'' + 
@@ -693,7 +671,7 @@ public class Data{
 			",return_policy = '" + returnPolicy + '\'' + 
 			",id = '" + id + '\'' + 
 			",belong_cate_self_transport = '" + belongCateSelfTransport + '\'' + 
-			",sku = '" + sku + '\'' + 
+			",sku = '" + sku + '\'' +
 			",status_new = '" + statusNew + '\'' + 
 			",relate_tags = '" + relateTags + '\'' + 
 			",price_discount = '" + priceDiscount + '\'' + 
@@ -712,7 +690,6 @@ public class Data{
 			",is_express = '" + isExpress + '\'' + 
 			",price_max = '" + priceMax + '\'' + 
 			",status = '" + status + '\'' + 
-			",installment_label = '" + installmentLabel + '\'' + 
 			",is_config_variant = '" + isConfigVariant + '\'' + 
 			",short_description = '" + shortDescription + '\'' + 
 			",shop_info = '" + shopInfo + '\'' + 
@@ -735,6 +712,7 @@ public class Data{
 			",discount_app = '" + discountApp + '\'' + 
 			",final_price_max = '" + finalPriceMax + '\'' + 
 			",has_options = '" + hasOptions + '\'' + 
+			",is_installment = '" + isInstallment + '\'' + 
 			",url_key = '" + urlKey + '\'' + 
 			",is_event = '" + isEvent + '\'' + 
 			",special_price = '" + specialPrice + '\'' + 
@@ -742,7 +720,6 @@ public class Data{
 			",height_product = '" + heightProduct + '\'' + 
 			",promotion_note = '" + promotionNote + '\'' + 
 			",is_shop_ads = '" + isShopAds + '\'' + 
-			",flash_sale = '" + flashSale + '\'' + 
 			"}";
 		}
 }

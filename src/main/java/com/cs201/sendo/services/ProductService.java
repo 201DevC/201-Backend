@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -21,10 +20,10 @@ public class ProductService {
     @Autowired
     private SendoProductClient productClient;
 
-    public Paging<ProductData> getListProductByCategory(Long cate1, Long cate2, Long cate3, PagingParams pagingParams) {
+    public Paging<ProductData> getListProductByCategory(Long cate1, Long cate2, Long cate3, PagingParams pagingParams, String keyword) {
         try {
-            Long count = productRepository.getProductCountByCategory(cate1, cate2, cate3);
-            List<Product> products = productRepository.getListProductByCategory(cate1, cate2, cate3, pagingParams);
+            Long count = productRepository.getProductCountByCategory(cate1, cate2, cate3, keyword);
+            List<Product> products = productRepository.getListProductByCategory(cate1, cate2, cate3, pagingParams, keyword);
             List<ProductData> listProductData = productClient.getListProductData(products);
 
             return Paging.of(listProductData, count, pagingParams);
@@ -33,7 +32,35 @@ public class ProductService {
         }
     }
 
+    public List<ProductData> getListRelatedProducts(Long productId) {
+        try {
+            List<Product> listRelatedProduct = productRepository.getListRelatedProduct(productId);
 
+            return productClient.getListProductData(listRelatedProduct);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public List<ProductData> getTrendingProducts() {
+        try {
+            List<Product> listRelatedProduct = productRepository.getTrendingProducts();
+
+            return productClient.getListProductData(listRelatedProduct);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public ProductData getProductDetail(Long productId) {
+        try {
+            Product product = productRepository.getProductById(productId);
+
+            return productClient.getProduct(product);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 }
 
 

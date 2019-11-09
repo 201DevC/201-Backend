@@ -15,4 +15,10 @@ public interface CategoryRepository {
     Long getCategoryLv1Count();
 
     List<Category> getCategoryLv1List(@Param("param") PagingParams params);
+
+    Long getCategoryLv2Count();
+
+    List<Category> getCategoryLv2List(@Param("param") PagingParams params, @Param("parentId") Long parentId);
+
+    List<Category> getCategoryLv3List(@Param("param") PagingParams params, @Param("parentId") Long parentId);
 }

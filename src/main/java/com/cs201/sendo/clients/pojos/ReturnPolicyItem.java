@@ -27,6 +27,12 @@ public class ReturnPolicyItem{
 	@JsonProperty("tooltip_title")
 	private String tooltipTitle;
 
+	@JsonProperty("is_installment")
+	private boolean isInstallment;
+
+	@JsonProperty("installment_label")
+	private String installmentLabel;
+
 	public void setTooltipContent(String tooltipContent){
 		this.tooltipContent = tooltipContent;
 	}
@@ -83,6 +89,22 @@ public class ReturnPolicyItem{
 		return tooltipTitle;
 	}
 
+	public void setIsInstallment(boolean isInstallment){
+		this.isInstallment = isInstallment;
+	}
+
+	public boolean isIsInstallment(){
+		return isInstallment;
+	}
+
+	public void setInstallmentLabel(String installmentLabel){
+		this.installmentLabel = installmentLabel;
+	}
+
+	public String getInstallmentLabel(){
+		return installmentLabel;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -94,6 +116,8 @@ public class ReturnPolicyItem{
 			",position = '" + position + '\'' + 
 			",title = '" + title + '\'' + 
 			",tooltip_title = '" + tooltipTitle + '\'' + 
+			",is_installment = '" + isInstallment + '\'' + 
+			",installment_label = '" + installmentLabel + '\'' + 
 			"}";
 		}
 }

@@ -26,4 +26,25 @@ public class CategoryService {
         }
     }
 
+    public Paging<Category> getListCategoryLv2(PagingParams params, Long parentId) {
+        try {
+            Long total = categoryRepository.getCategoryLv2Count();
+            List<Category> categoryList = categoryRepository.getCategoryLv2List(params, parentId);
+
+            return Paging.of(categoryList, total, params);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Paging<Category> getListCategoryLv3(PagingParams params, Long parentId) {
+        try {
+            Long total = categoryRepository.getCategoryLv2Count();
+            List<Category> categoryList = categoryRepository.getCategoryLv3List(params, parentId);
+
+            return Paging.of(categoryList, total, params);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
