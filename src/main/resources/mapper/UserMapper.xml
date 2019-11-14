@@ -32,4 +32,13 @@
         from user
         where user.id = #{userId}
     </select>
+
+    <select id="getUserByLoginRequest" resultType="com.cs201.sendo.models.UserModel" parameterType="com.cs201.sendo.models.LoginRequest">
+        select *
+        from user
+        <where>
+            <if test="username != null and username != ''">or username = #{username}</if>
+            <if test="sendoUserId != null and sendoUserId != ''">or s_id = #{sendoUserId}</if>
+        </where>
+    </select>
 </mapper>

@@ -23,8 +23,8 @@ public class ProductController {
     }
 
     @GetMapping("/list")
+    @ApiOperation(value = "Lazy load: lấy offset = offset + size + 1, gửi lên parameter gồm offset và size là lấy được data trang tiếp theo.")
     public Paging<ProductData> getProductListByCategory(@RequestParam(value = "userId", required = false) Long userId,
-                                                        @RequestParam(value = "page", required = false) Long page,
                                                         @RequestParam(value = "size", required = false) Long size,
                                                         @RequestParam(value = "offset", required = false) Long offset,
                                                         @RequestParam(value = "sortBy", required = false) String sortColumn,
@@ -35,8 +35,8 @@ public class ProductController {
                                                         @RequestParam(value = "keyword", required = false) String keyword) {
 
         PagingParams params = null;
-        if (page != null && size != null && offset != null) {
-            params = PagingParams.builder().page(page).size(size).offset(offset).build();
+        if (size != null && offset != null) {
+            params = PagingParams.builder().size(size).offset(offset).build();
         }
         if (keyword != null) {
             keyword = keyword.replaceAll("\\s+", "-");

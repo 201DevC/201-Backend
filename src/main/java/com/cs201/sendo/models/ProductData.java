@@ -25,5 +25,9 @@ public class ProductData {
     private Integer price;
     @JsonIgnore
     private int order;
+    @JsonProperty("short_description")
+    private String shortDescription;
+    @JsonProperty("description")
+    private String description;
 
 }

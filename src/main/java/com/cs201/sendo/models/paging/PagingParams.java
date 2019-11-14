@@ -12,7 +12,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PagingParams {
-    private Long page;
     private Long offset;
     private Long size;
     private String sortColumn;

@@ -20,6 +20,9 @@ public class ProductService {
     @Autowired
     private SendoProductClient productClient;
 
+//    @Autowired
+//    private SendoProductClientV2 productClient;
+
     public Paging<ProductData> getListProductByCategory(Long cate1, Long cate2, Long cate3, PagingParams pagingParams, String keyword) {
         try {
             Long count = productRepository.getProductCountByCategory(cate1, cate2, cate3, keyword);

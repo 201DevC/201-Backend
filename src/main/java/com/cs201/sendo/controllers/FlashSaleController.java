@@ -20,15 +20,14 @@ public class FlashSaleController {
 
     @GetMapping
     public Paging<ProductData> getFlashSaleList(@RequestParam(value = "userId", required = false) Long userId,
-                                                @RequestParam(value = "page", required = false) Long page,
                                                 @RequestParam(value = "size", required = false) Long size,
                                                 @RequestParam(value = "offset", required = false) Long offset,
                                                 @RequestParam(value = "sortBy", required = false) String sortColumn,
                                                 @RequestParam(value = "direction", required = false) String direction) {
         PagingParams params = null;
 
-        if (page != null && size != null && offset != null) {
-            params = PagingParams.builder().page(page).offset(offset).size(size).build();
+        if (size != null && offset != null) {
+            params = PagingParams.builder().offset(offset).size(size).build();
         }
         return flashSaleService.getFlashSale(userId, params);
     }
