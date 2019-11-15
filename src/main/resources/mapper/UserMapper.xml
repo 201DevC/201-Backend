@@ -37,8 +37,18 @@
         select *
         from user
         <where>
-            <if test="username != null and username != ''">or username = #{username}</if>
+            <if test="username != null and username != ''"> or username = #{username} </if>
+            <if test="username != null and username != ''"> or s_id = #{username} </if>
             <if test="sendoUserId != null and sendoUserId != ''">or s_id = #{sendoUserId}</if>
+        </where>
+    </select>
+
+    <select id="getUserByUsername" resultType="com.cs201.sendo.models.UserModel">
+        select *
+        from user
+        <where>
+            <if test="username != null and username != ''"> username = #{username} </if>
+            <if test="username != null and username != ''"> or s_id = #{username}</if>
         </where>
     </select>
 </mapper>

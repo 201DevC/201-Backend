@@ -19,6 +19,10 @@ public class UserService {
 
     public UserModel createUser(UserModel userModel) {
         try {
+            UserModel user = userRepository.getUserByUsername(userModel.getUsername());
+            if (user != null) {
+                return user;
+            }
             userRepository.createUser(userModel);
             return userRepository.getUserById(userModel.getId());
         } catch (Exception e) {
