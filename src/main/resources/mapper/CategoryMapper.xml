@@ -34,6 +34,22 @@
         </if>
     </select>
 
+    <select id="getCategoryLv2Count" resultType="Long">
+        select count(*)
+        from cat_lv2
+        <if test="parentId != null and parentId > 0">
+            where cat_lv1_id = #{parentId}
+        </if>
+    </select>
+
+    <select id="getCategoryLv3Count" resultType="Long">
+        select count(*)
+        from cat_lv3
+        <if test="parentId != null and parentId > 0">
+            where cat_lv2_id = #{parentId}
+        </if>
+    </select>
+
     <select id="getCategoryLv3List" resultType="com.cs201.sendo.models.Category">
         select
         id,

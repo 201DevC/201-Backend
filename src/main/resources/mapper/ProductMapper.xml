@@ -101,5 +101,76 @@
         limit 1
     </select>
 
+
+    <select id="getProductDataByIds" resultMap="ProductDataMap">
+     select p.product_id as productId,
+            p.sendo_pid as sendoPid,
+            p.name as name,
+            p.images as images,
+            p.order_count as orderCount,
+            p.shop_info as shopInfo,
+            p.price as price,
+            p.price_max as priceMax,
+            p.short_description as shortDescription,
+            p.description as description,
+            s.id as s_id,
+            s.name as s_name,
+            s.image as s_image,
+            r.percent_star1 as r_percent_star1,
+            r.percent_star2 as r_percent_star2,
+            r.percent_star3 as r_percent_star3,
+            r.percent_star4 as r_percent_star4,
+            r.percent_star5 as r_percent_star5,
+            r.star1 as r_star1,
+            r.star2 as r_star2,
+            r.star3 as r_star3,
+            r.star4 as r_star4,
+            r.star5 as r_star5,
+            r.total_rated as r_total_rated,
+            r.percent_number as r_percent_number
+        from product_data p
+            left join shop_info s on p.shop_info = s.id
+            left join rating_info r on r.product_id = p.product_id
+        where
+        p.product_id in
+        <foreach collection="ids" item="id" separator=", " open="(" close=")" >
+            #{id}
+        </foreach>
+
+    </select>
+
+    <resultMap id="ProductDataMap" type="com.cs201.sendo.models.ProductData">
+        <result property="id" column="productId"/>
+        <result property="sendoPid" column="sendoPid"/>
+        <result property="name" column="name"/>
+        <result property="images" column="images" javaType="java.util.ArrayList"
+                jdbcType="VARCHAR" typeHandler="com.cs201.sendo.mappers.handler.StringArrayListTypeHandler"/>
+        <result property="orderCount" column="orderCount"/>
+        <result property="price" column="price"/>
+        <result property="priceMax" column="priceMax"/>
+        <result property="shortDescription" column="shortDescription"/>
+        <association property="shopInfo" javaType="com.cs201.sendo.models.ShopInfo">
+            <result property="id" column="s_id"/>
+            <result property="name" column="s_name"/>
+            <result property="logo" column="s_image"/>
+        </association>
+
+        <association property="ratingInfo" javaType="com.cs201.sendo.clients.pojos.RatingInfo">
+            <result property="percentStar1"  column="r_percent_star1"/>
+            <result property="percentStar2" column="r_percent_star2"/>
+            <result property="percentStar3" column="r_percent_star3"/>
+            <result property="percentStar4" column="r_percent_star4"/>
+            <result property="percentStar5" column="r_percent_star5"/>
+            <result property="star1" column="r_star1"/>
+            <result property="star2" column="r_star2"/>
+            <result property="star3" column="r_star3"/>
+            <result property="star4" column="r_star4"/>
+            <result property="star5" column="r_star5"/>
+            <result property="totalRated" column="r_total_rated"/>
+            <result property="percentNumber" column="r_percent_number"/>
+        </association>
+
+    </resultMap>
+
 </mapper>
 

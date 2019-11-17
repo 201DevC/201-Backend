@@ -23,6 +23,8 @@ public class ProductData {
     @JsonProperty(value = "rating_info")
     private RatingInfo ratingInfo;
     private Integer price;
+    @JsonProperty(value = "price_max")
+    private Integer priceMax;
     @JsonIgnore
     private int order;
     @JsonProperty("short_description")
