@@ -1,6 +1,5 @@
 package com.cs201.sendo.controllers;
 
-import com.cs201.sendo.clients.pojos.Data;
 import com.cs201.sendo.models.ProductData;
 import com.cs201.sendo.models.paging.Paging;
 import com.cs201.sendo.models.paging.PagingParams;

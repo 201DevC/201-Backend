@@ -28,7 +28,7 @@ public class CategoryService {
 
     public Paging<Category> getListCategoryLv2(PagingParams params, Long parentId) {
         try {
-            Long total = categoryRepository.getCategoryLv2Count();
+            Long total = categoryRepository.getCategoryLv2Count(parentId);
             List<Category> categoryList = categoryRepository.getCategoryLv2List(params, parentId);
 
             return Paging.of(categoryList, total, params);
@@ -39,7 +39,7 @@ public class CategoryService {
 
     public Paging<Category> getListCategoryLv3(PagingParams params, Long parentId) {
         try {
-            Long total = categoryRepository.getCategoryLv2Count();
+            Long total = categoryRepository.getCategoryLv3Count(parentId);
             List<Category> categoryList = categoryRepository.getCategoryLv3List(params, parentId);
 
             return Paging.of(categoryList, total, params);

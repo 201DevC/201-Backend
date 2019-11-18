@@ -18,7 +18,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public ProductData getProductDetail(@PathVariable Long id) {
+    public ProductData getProductDetail(@PathVariable Long id, @RequestParam(value = "userId", required = false) Long userId) {
         return productService.getProductDetail(id);
     }
 

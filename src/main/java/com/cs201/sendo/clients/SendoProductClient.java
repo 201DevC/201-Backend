@@ -43,6 +43,7 @@ public class SendoProductClient {
                 productData.setImages(getImages(data.getMedia()));
                 productData.setOrderCount(data.getOrderCount());
                 productData.setPrice(data.getPrice());
+                productData.setPriceMax(data.getPriceMax());
                 productData.setShopInfo(getShopInfo(data.getShopInfo()));
                 productData.setRatingInfo(data.getRatingInfo());
                 productData.setShortDescription(data.getShortDescription());
