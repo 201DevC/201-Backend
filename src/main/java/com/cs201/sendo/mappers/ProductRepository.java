@@ -23,7 +23,7 @@ public interface ProductRepository {
 
     List<Product> getRandomProduct(PagingParams params);
 
-    List<Product> getListRelatedProduct(@Param("productId") Long productId);
+    List<Product> getListRelatedProduct(Product product);
 
     List<Product> getTrendingProducts();
 

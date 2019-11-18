@@ -52,6 +52,7 @@
         path_name as pathName,
         alter_href as alterHref
         from product
+        where product_id <![CDATA[ < ]]> 4000
         order by RAND()
         <if test="pagingParams != null">
             limit ${pagingParams.size}
@@ -62,7 +63,7 @@
         </if>
     </select>
 
-    <select id="getListRelatedProduct" resultType="com.cs201.sendo.models.Product">
+    <select id="getListRelatedProduct" resultType="com.cs201.sendo.models.Product" parameterType="com.cs201.sendo.models.Product">
         select product_id as productId,
             sd_product_id as sdProductId,
             cat_lv1_id as catLv1Id,
@@ -71,7 +72,7 @@
             path_name as pathName,
             alter_href as alterHref
         from product
-        order by RAND()
+        where cat_lv2_id = #{catLv2Id}
         limit 20
     </select>
 
@@ -84,6 +85,7 @@
             path_name as pathName,
             alter_href as alterHref
         from product
+        where product_id <![CDATA[ < ]]> 4000
         order by RAND()
         limit 20
     </select>

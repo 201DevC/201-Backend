@@ -23,7 +23,7 @@ public class SendoApplication {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate build = restTemplateBuilder
-                .setConnectTimeout(Duration.ofSeconds(10))
+                .setConnectTimeout(Duration.ofSeconds(3))
                 .build();
         ObjectMapper mapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

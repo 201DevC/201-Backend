@@ -41,8 +41,11 @@ public class ProductService {
 
     public List<ProductData> getListRelatedProducts(Long productId) {
         try {
-            List<Product> listRelatedProduct = productRepository.getListRelatedProduct(productId);
-
+            List<Product> listRelatedProduct = new ArrayList<>();
+            Product product = productRepository.getProductById(productId);
+            if (product != null) {
+                listRelatedProduct = productRepository.getListRelatedProduct(product);
+            }
             return this.getProductData(listRelatedProduct);
         } catch (Exception e) {
             throw new RuntimeException();
