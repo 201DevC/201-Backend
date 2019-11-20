@@ -52,7 +52,7 @@
         path_name as pathName,
         alter_href as alterHref
         from product
-        where product_id <![CDATA[ < ]]> 4000
+        where product_id <![CDATA[ < ]]> 155000
         order by RAND()
         <if test="pagingParams != null">
             limit ${pagingParams.size}
@@ -85,7 +85,7 @@
             path_name as pathName,
             alter_href as alterHref
         from product
-        where product_id <![CDATA[ < ]]> 4000
+        where product_id <![CDATA[ < ]]> 155000
         order by RAND()
         limit 20
     </select>

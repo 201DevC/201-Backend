@@ -2,7 +2,6 @@ package com.cs201.sendo.mappers;
 
 import com.cs201.sendo.models.Product;
 import com.cs201.sendo.models.ProductData;
-import com.cs201.sendo.models.paging.Paging;
 import com.cs201.sendo.models.paging.PagingParams;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
