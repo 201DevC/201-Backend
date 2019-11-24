@@ -60,4 +60,9 @@ public class ProductController {
     public List<ProductData> getTrendingProducts() {
         return productService.getTrendingProducts();
     }
+
+    @GetMapping("/category/{categoryId}")
+    public List<ProductData> getRecommendationByCategory2(@PathVariable Long categoryId) {
+        return productService.getRecommendationByCategory2(categoryId);
+    }
 }

@@ -86,6 +86,17 @@ public class ProductService {
         }
     }
 
+    public List<ProductData> getRecommendationByCategory2(List<Long> categoryId) {
+        try {
+            List<Product> products = productRepository.getRecommendationByCategory2(categoryId);
+            List<ProductData> listProductData = getProductData(products);
+
+            return listProductData;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private List<ProductData> getProductData(List<Product> products) {
         List<Long> ids = new ArrayList<>();
         for (int i = 0; i < products.size(); i++) {
@@ -101,6 +112,8 @@ public class ProductService {
         listProductData.addAll(productDataByIds);
         return listProductData;
     }
+
+
 }
 
 
