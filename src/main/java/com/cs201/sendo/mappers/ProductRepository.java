@@ -29,4 +29,6 @@ public interface ProductRepository {
     Product getProductById(@Param("productId") Long productId);
 
     List<ProductData> getProductDataByIds(@Param("ids") List<Long> ids);
+
+    List<Product> getProductByIds(@Param("ids") List<Long> ids);
 }
