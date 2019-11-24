@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,6 +68,19 @@ public class ProductService {
             Product product = productRepository.getProductById(productId);
 
             return productClient.getProduct(product);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public List<ProductData> getListProductDataByIds(List<Long> ids) {
+        try {
+            if (Objects.isNull(ids) || ids.size() <= 0) {
+                return new ArrayList<>();
+            }
+            List<Product> products = productRepository.getProductByIds(ids);
+
+            return this.getProductData(products);
         } catch (Exception e) {
             throw new RuntimeException();
         }
