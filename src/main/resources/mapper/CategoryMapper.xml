@@ -63,4 +63,13 @@
             offset ${param.offset}
         </if>
     </select>
+
+    <select id="getCategoryIdLv2ByParentIds" resultType="java.lang.Long">
+        select id
+        from cat_lv2
+        where cat_lv1_id in
+        <foreach collection="lv1Ids" item="id" separator=", " open="(" close=")" >
+            #{id}
+        </foreach>
+    </select>
 </mapper>

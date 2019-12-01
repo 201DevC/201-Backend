@@ -39,13 +39,13 @@ public class FlashSaleService {
             ids.add(products.get(i).getProductId());
         }
         List<ProductData> productDataByIds = productRepository.getProductDataByIds(ids);
-        List<Product> missingProduct = products.stream().filter(product ->
-                productDataByIds.stream().noneMatch(productData -> productData.getId().equals(product.getProductId())))
-                .collect(Collectors.toList());
-        List<ProductData> listProductData = productClient.getListProductData(missingProduct);
-
-        listProductData.addAll(productDataByIds);
-        return listProductData;
+//        List<Product> missingProduct = products.stream().filter(product ->
+//                productDataByIds.stream().noneMatch(productData -> productData.getId().equals(product.getProductId())))
+//                .collect(Collectors.toList());
+//        List<ProductData> listProductData = productClient.getListProductData(missingProduct);
+//
+//        productDataByIds.addAll(listProductData);
+        return productDataByIds;
     }
 
 }

@@ -63,27 +63,28 @@
         </if>
     </select>
 
-    <select id="getListRelatedProduct" resultType="com.cs201.sendo.models.Product" parameterType="com.cs201.sendo.models.Product">
+    <select id="getListRelatedProduct" resultType="com.cs201.sendo.models.Product"
+            parameterType="com.cs201.sendo.models.Product">
         select product_id as productId,
-            sd_product_id as sdProductId,
-            cat_lv1_id as catLv1Id,
-            cat_lv2_id as catLv2Id,
-            cat_lv3_id as catLv3Id,
-            path_name as pathName,
-            alter_href as alterHref
+        sd_product_id as sdProductId,
+        cat_lv1_id as catLv1Id,
+        cat_lv2_id as catLv2Id,
+        cat_lv3_id as catLv3Id,
+        path_name as pathName,
+        alter_href as alterHref
         from product
         where cat_lv2_id = #{catLv2Id}
         limit 20
     </select>
 
     <select id="getTrendingProducts" resultType="com.cs201.sendo.models.Product">
-        select product_id as productId,
-            sd_product_id as sdProductId,
-            cat_lv1_id as catLv1Id,
-            cat_lv2_id as catLv2Id,
-            cat_lv3_id as catLv3Id,
-            path_name as pathName,
-            alter_href as alterHref
+        select product_id    as productId,
+               sd_product_id as sdProductId,
+               cat_lv1_id    as catLv1Id,
+               cat_lv2_id    as catLv2Id,
+               cat_lv3_id    as catLv3Id,
+               path_name     as pathName,
+               alter_href    as alterHref
         from product
         where product_id <![CDATA[ < ]]> 155000
         order by RAND()
@@ -92,12 +93,12 @@
 
     <select id="getProductById" resultType="com.cs201.sendo.models.Product">
         select product_id as productId,
-            sd_product_id as sdProductId,
-            cat_lv1_id as catLv1Id,
-            cat_lv2_id as catLv2Id,
-            cat_lv3_id as catLv3Id,
-            path_name as pathName,
-            alter_href as alterHref
+        sd_product_id as sdProductId,
+        cat_lv1_id as catLv1Id,
+        cat_lv2_id as catLv2Id,
+        cat_lv3_id as catLv3Id,
+        path_name as pathName,
+        alter_href as alterHref
         from product
         where product.product_id = #{productId}
         limit 1
@@ -105,37 +106,37 @@
 
 
     <select id="getProductDataByIds" resultMap="ProductDataMap">
-     select p.product_id as productId,
-            p.sendo_pid as sendoPid,
-            p.name as name,
-            p.images as images,
-            p.order_count as orderCount,
-            p.shop_info as shopInfo,
-            p.price as price,
-            p.price_max as priceMax,
-            p.short_description as shortDescription,
-            p.description as description,
-            s.id as s_id,
-            s.name as s_name,
-            s.image as s_image,
-            r.percent_star1 as r_percent_star1,
-            r.percent_star2 as r_percent_star2,
-            r.percent_star3 as r_percent_star3,
-            r.percent_star4 as r_percent_star4,
-            r.percent_star5 as r_percent_star5,
-            r.star1 as r_star1,
-            r.star2 as r_star2,
-            r.star3 as r_star3,
-            r.star4 as r_star4,
-            r.star5 as r_star5,
-            r.total_rated as r_total_rated,
-            r.percent_number as r_percent_number
+        select p.product_id as productId,
+        p.sendo_pid as sendoPid,
+        p.name as name,
+        p.images as images,
+        p.order_count as orderCount,
+        p.shop_info as shopInfo,
+        p.price as price,
+        p.price_max as priceMax,
+        p.short_description as shortDescription,
+        p.description as description,
+        s.id as s_id,
+        s.name as s_name,
+        s.image as s_image,
+        r.percent_star1 as r_percent_star1,
+        r.percent_star2 as r_percent_star2,
+        r.percent_star3 as r_percent_star3,
+        r.percent_star4 as r_percent_star4,
+        r.percent_star5 as r_percent_star5,
+        r.star1 as r_star1,
+        r.star2 as r_star2,
+        r.star3 as r_star3,
+        r.star4 as r_star4,
+        r.star5 as r_star5,
+        r.total_rated as r_total_rated,
+        r.percent_number as r_percent_number
         from product_data p
-            left join shop_info s on p.shop_info = s.id
-            left join rating_info r on r.product_id = p.product_id
+        left join shop_info s on p.shop_info = s.id
+        left join rating_info r on r.product_id = p.product_id
         where
         p.product_id in
-        <foreach collection="ids" item="id" separator=", " open="(" close=")" >
+        <foreach collection="ids" item="id" separator=", " open="(" close=")">
             #{id}
         </foreach>
 
@@ -153,9 +154,37 @@
         from product
         where
         product_id in
-        <foreach collection="ids" item="id" separator=", " open="(" close=")" >
+        <foreach collection="ids" item="id" separator=", " open="(" close=")">
             #{id}
         </foreach>
+    </select>
+    <select id="getRecommendationByCategory2" resultType="com.cs201.sendo.models.Product">
+        select product_id as productId,
+        sd_product_id as sdProductId,
+        cat_lv1_id as catLv1Id,
+        cat_lv2_id as catLv2Id,
+        cat_lv3_id as catLv3Id,
+        path_name as pathName,
+        alter_href as alterHref
+        from product
+        where cat_lv2_id = #{categoryId}
+        order by RAND()
+        limit 1
+    </select>
+    <select id="getSampleProductByCategories" resultType="com.cs201.sendo.models.Product">
+            <foreach collection="catLv2Ids" item="id" separator="union">
+                (select product_id as productId,
+                sd_product_id as sdProductId,
+                cat_lv1_id as catLv1Id,
+                cat_lv2_id as catLv2Id,
+                cat_lv3_id as catLv3Id,
+                path_name as pathName,
+                alter_href as alterHref
+                from product
+                where cat_lv2_id  = #{id}
+                order by rand()
+                limit 1)
+            </foreach>
     </select>
 
     <resultMap id="ProductDataMap" type="com.cs201.sendo.models.ProductData">
@@ -175,7 +204,7 @@
         </association>
 
         <association property="ratingInfo" javaType="com.cs201.sendo.clients.pojos.RatingInfo">
-            <result property="percentStar1"  column="r_percent_star1"/>
+            <result property="percentStar1" column="r_percent_star1"/>
             <result property="percentStar2" column="r_percent_star2"/>
             <result property="percentStar3" column="r_percent_star3"/>
             <result property="percentStar4" column="r_percent_star4"/>

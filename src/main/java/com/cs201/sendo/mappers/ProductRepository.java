@@ -32,5 +32,8 @@ public interface ProductRepository {
 
     List<Product> getProductByIds(@Param("ids") List<Long> ids);
 
-    List<Product> getRecommendationByCategory2(@Param('categoryId') Long categoryId);
+    Product getRecommendationByCategory2(@Param("categoryId") Long categoryId);
+
+    List<Product> getSampleProductByCategories(@Param("catLv2Ids") List<Long> catLv2Ids);
+
 }

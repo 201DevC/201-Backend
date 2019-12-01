@@ -1,10 +1,12 @@
 package com.cs201.sendo.models;
 
-public class UserViewCount implements Serializable {
-    @Id
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class UserViewCount {
     private Long userId;
-    @Id
-    @Column(name = "cat_lv2_id")
     private Long cateLv2Id;
     private Integer count;
     private String sId;

@@ -4,6 +4,7 @@ import com.cs201.sendo.models.ProductData;
 import com.cs201.sendo.models.paging.Paging;
 import com.cs201.sendo.models.paging.PagingParams;
 import com.cs201.sendo.services.ProductService;
+import com.cs201.sendo.services.UserViewCountService;
 import com.cs201.sendo.services.ViewHistoryService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class ProductController {
 
     @Autowired
     private ViewHistoryService viewHistoryService;
+
 
     @GetMapping("/{id}")
     public ProductData getProductDetail(@PathVariable Long id, @RequestParam(value = "userId", required = false) Long userId) {
@@ -63,6 +65,7 @@ public class ProductController {
 
     @GetMapping("/category/{categoryId}")
     public List<ProductData> getRecommendationByCategory2(@PathVariable Long categoryId) {
-        return productService.getRecommendationByCategory2(categoryId);
+        return null;
+        //return productService.getRecommendationByCategory2(categoryId);
     }
 }

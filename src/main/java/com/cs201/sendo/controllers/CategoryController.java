@@ -1,6 +1,7 @@
 package com.cs201.sendo.controllers;
 
 import com.cs201.sendo.models.Category;
+import com.cs201.sendo.models.ProductData;
 import com.cs201.sendo.models.paging.Paging;
 import com.cs201.sendo.models.paging.PagingParams;
 import com.cs201.sendo.services.CategoryService;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @Api(value = "API lấy data của Danh mục sản phẩm")
@@ -43,6 +47,13 @@ public class CategoryController {
         }
 
         return categoryService.getListCategoryLv2(params, parentId);
+    }
+
+    @GetMapping("/lv2/sample")
+    @ApiOperation(value = "Lấy danh sách các sản phẩm đại diện cho category level 2. Dùng cho form khảo sát.")
+    public List<ProductData> getSampleProduct(@RequestParam(value = "size", required = false) Long size, Long[] lv1Ids) {
+        List<Long> lv1IdList = Arrays.asList(lv1Ids);
+        return categoryService.getSampleProductListOfCateLv2(lv1IdList);
     }
 
     @GetMapping("/lv3")
