@@ -10,3 +10,7 @@ spring:
     username: root
     password: 12345
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+logging:
+  file: log5.txt

@@ -31,6 +31,7 @@
         select *
         from user
         where user.id = #{userId}
+        limit 1
     </select>
 
     <select id="getUserByLoginRequest" resultType="com.cs201.sendo.models.UserModel" parameterType="com.cs201.sendo.models.LoginRequest">
@@ -41,6 +42,7 @@
             <if test="username != null and username != ''"> or s_id = #{username} </if>
             <if test="sendoUserId != null and sendoUserId != ''">or s_id = #{sendoUserId}</if>
         </where>
+        limit 1
     </select>
 
     <select id="getUserByUsername" resultType="com.cs201.sendo.models.UserModel">
@@ -50,5 +52,6 @@
             <if test="username != null and username != ''"> username = #{username} </if>
             <if test="username != null and username != ''"> or s_id = #{username}</if>
         </where>
+        limit 1
     </select>
 </mapper>

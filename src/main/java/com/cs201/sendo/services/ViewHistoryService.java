@@ -19,11 +19,13 @@ public class ViewHistoryService {
     private final ViewHistoryMapper viewHistoryMapper;
     private final ProductRepository productRepository;
     private final ProductService productService;
+    private final UserViewCountService userViewCountService;
 
-    public ViewHistoryService(ViewHistoryMapper viewHistoryMapper, ProductRepository productRepository, ProductService productService) {
+    public ViewHistoryService(ViewHistoryMapper viewHistoryMapper, ProductRepository productRepository, ProductService productService, UserViewCountService userViewCountService) {
         this.viewHistoryMapper = viewHistoryMapper;
         this.productRepository = productRepository;
         this.productService = productService;
+        this.userViewCountService = userViewCountService;
     }
 
     public void insertViewHistory(Long productId, Long userId) {

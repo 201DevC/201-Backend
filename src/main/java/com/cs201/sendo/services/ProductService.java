@@ -6,6 +6,7 @@ import com.cs201.sendo.models.Product;
 import com.cs201.sendo.models.ProductData;
 import com.cs201.sendo.models.paging.Paging;
 import com.cs201.sendo.models.paging.PagingParams;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ProductService {
 
     @Autowired
@@ -86,6 +88,32 @@ public class ProductService {
         }
     }
 
+    public List<ProductData> getListSampleProductByCatLv2Ids(List<Long> catLv2Ids) {
+        try {
+            List<Product> products = productRepository.getSampleProductByCategories(catLv2Ids);
+
+            return this.getProductData(products);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public List<ProductData> getRecommendationByCategory2(List<Long> categoryIds) {
+        try {
+            List<Product> products = new ArrayList<>();
+
+            for (Long categoryId : categoryIds) {
+                Product productRecommend = productRepository.getRecommendationByCategory2(categoryId);
+                products.add(productRecommend);
+            }
+            List<ProductData> listProductData = getProductData(products);
+
+            return listProductData;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private List<ProductData> getProductData(List<Product> products) {
         List<Long> ids = new ArrayList<>();
         for (int i = 0; i < products.size(); i++) {
@@ -93,14 +121,21 @@ public class ProductService {
             ids.add(products.get(i).getProductId());
         }
         List<ProductData> productDataByIds = productRepository.getProductDataByIds(ids);
-        List<Product> missingProduct = products.stream().filter(product ->
-                productDataByIds.stream().noneMatch(productData -> productData.getId().equals(product.getProductId())))
-                .collect(Collectors.toList());
-        List<ProductData> listProductData = productClient.getListProductData(missingProduct);
-
-        listProductData.addAll(productDataByIds);
-        return listProductData;
+//        List<Product> missingProduct = products.stream().filter(product ->
+//                productDataByIds.stream().noneMatch(productData -> productData.getId().equals(product.getProductId())))
+//                .collect(Collectors.toList());
+//
+//        List<ProductData> listProductData = new ArrayList<>();
+//        try {
+//            listProductData = productClient.getListProductData(missingProduct);
+//        } catch (Exception e) {
+//            log.error("Error {}", e.getMessage() , e);
+//        }
+//
+//        productDataByIds.addAll(listProductData);
+        return productDataByIds;
     }
+
 }
 
 

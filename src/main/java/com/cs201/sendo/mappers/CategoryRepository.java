@@ -23,4 +23,6 @@ public interface CategoryRepository {
     Long getCategoryLv3Count(@Param("parentId") Long parentId);
 
     List<Category> getCategoryLv3List(@Param("param") PagingParams params, @Param("parentId") Long parentId);
+
+    List<Long> getCategoryIdLv2ByParentIds(@Param("lv1Ids") List<Long> lv1Ids);
 }
