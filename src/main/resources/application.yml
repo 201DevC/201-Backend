@@ -13,4 +13,4 @@ spring:
 
 
 logging:
-  file: log5.txt
+  file: logs/log5.txt

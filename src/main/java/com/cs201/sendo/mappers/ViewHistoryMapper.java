@@ -16,6 +16,9 @@ public interface ViewHistoryMapper {
 
     List<Long> getListProductIdHistByUser(@Param("userId") Long id, @Param("params") PagingParams pagingParams);
 
+    List<Long> getList20ProductIdHistByUser(@Param("userId") Long id);
+
     Long getViewHistCount(@Param("userId") Long id);
 
+    void deleteViewHistory(@Param("userId") Long userId, @Param("productId") Long productId);
 }

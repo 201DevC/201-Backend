@@ -10,20 +10,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private SendoProductClient productClient;
+    private final SendoProductClient productClient;
+
+    private final RecommendService recommendService;
+
+    public ProductService(RecommendService recommendService, ProductRepository productRepository, SendoProductClient productClient) {
+        this.recommendService = recommendService;
+        this.productRepository = productRepository;
+        this.productClient = productClient;
+    }
 
 //    @Autowired
 //    private SendoProductClientV2 productClient;
@@ -35,19 +39,28 @@ public class ProductService {
 
             List<ProductData> listProductData = getProductData(products);
 
-
             return Paging.of(listProductData, count, pagingParams);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<ProductData> getListRelatedProducts(Long productId) {
+    public List<ProductData> getListRelatedProducts(Long productId, Long userId) {
         try {
             List<Product> listRelatedProduct = new ArrayList<>();
             Product product = productRepository.getProductById(productId);
             if (product != null) {
-                listRelatedProduct = productRepository.getListRelatedProduct(product);
+                try {
+                    List<Product> recommendationProduct = recommendService.getRecommendationProduct(userId);
+                    for (Product recommend : recommendationProduct) {
+                        if (product.getCatLv2Id().equals(recommend.getCatLv2Id()) && !product.getProductId().equals(recommend.getProductId())) {
+                            listRelatedProduct.add(recommend);
+                        }
+                    }
+                } catch (Exception e) {
+                    log.error("Error when add recommend {}", e.getMessage(), e);
+                }
+                listRelatedProduct.addAll(productRepository.getListRelatedProduct(product));
             }
             return this.getProductData(listRelatedProduct);
         } catch (Exception e) {
@@ -115,6 +128,9 @@ public class ProductService {
     }
 
     private List<ProductData> getProductData(List<Product> products) {
+        if (products == null || products.size() <= 0) {
+            return new ArrayList<>();
+        }
         List<Long> ids = new ArrayList<>();
         for (int i = 0; i < products.size(); i++) {
             products.get(i).setOrder(i);
@@ -133,9 +149,40 @@ public class ProductService {
 //        }
 //
 //        productDataByIds.addAll(listProductData);
-        return productDataByIds;
+
+
+        Map<Long, ProductData> productDataMap = productDataByIds.parallelStream().collect(Collectors.toMap(ProductData::getId, productData -> productData));
+        List<ProductData> result = new ArrayList<>();
+
+        for (Long id : ids) {
+            result.add(productDataMap.get(id));
+        }
+        return result;
     }
 
+    public List<ProductData> getRecommendationProducts(Long userId) {
+
+        List<Product> result = new ArrayList<>();
+        List<Product> recommendationProducts = this.recommendService.getRecommendationProduct(userId);
+
+        List<Long> listRecommendCat = this.recommendService.getListCategoryLv2(userId);
+
+        for (Product recommendationProduct : recommendationProducts) {
+            if (listRecommendCat.contains(recommendationProduct.getCatLv2Id())) {
+                if (!result.contains(recommendationProduct)) {
+                    result.add(recommendationProduct);
+                }
+            }
+        }
+
+        PagingParams params = PagingParams.builder().offset(0L).size(5L).build();
+        for (Long aLong : listRecommendCat) {
+            List<Product> listProductByCategory = productRepository.getListProductByCategory(null, aLong, null, params, null);
+            result.addAll(listProductByCategory);
+        }
+
+        return this.getProductData(result);
+    }
 }
 
 

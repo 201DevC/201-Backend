@@ -23,7 +23,8 @@
     <select id="getCategoryLv2List" resultType="com.cs201.sendo.models.Category">
         select
         id,
-        name
+        name,
+        image
         from cat_lv2
         <if test="parentId != null and parentId > 0">
             where cat_lv1_id = #{parentId}

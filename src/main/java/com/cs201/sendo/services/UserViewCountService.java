@@ -1,6 +1,8 @@
 package com.cs201.sendo.services;
 
+import com.cs201.sendo.mappers.ProductRepository;
 import com.cs201.sendo.mappers.UserViewCountMapper;
+import com.cs201.sendo.models.Product;
 import com.cs201.sendo.models.UserViewCount;
 import com.cs201.sendo.models.ViewHistory;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,11 @@ import java.util.List;
 public class UserViewCountService {
 
     private final UserViewCountMapper userViewCountMapper;
+    private final ProductRepository productRepository;
 
-    public UserViewCountService(UserViewCountMapper userViewCountMapper) {
+    public UserViewCountService(UserViewCountMapper userViewCountMapper, ProductRepository productRepository) {
         this.userViewCountMapper = userViewCountMapper;
+        this.productRepository = productRepository;
     }
 
     public void insertFavoriteCategoryLv2(Long id, List<Long> favLv2Ids) {
@@ -51,5 +55,18 @@ public class UserViewCountService {
         } else {
             userViewCountMapper.insertUserViewCount(userViewCount);
         }
+    }
+
+    public void deleteUserViewCount(Long userId, Long productId) {
+
+        Product product = productRepository.getProductById(productId);
+
+        UserViewCount userViewCount = new UserViewCount();
+        userViewCount.setCateLv2Id(product.getCatLv2Id());
+        userViewCount.setUserId(userId);
+        userViewCount.setCount(0);
+
+        userViewCountMapper.hardUpdateUserViewCount(userViewCount);
+
     }
 }

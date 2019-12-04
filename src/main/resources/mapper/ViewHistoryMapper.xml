@@ -27,13 +27,30 @@
         )
     </insert>
 
+    <delete id="deleteViewHistory" parameterType="com.cs201.sendo.models.ViewHistory">
+        delete from view_history
+        where user_id = #{userId}
+        and  product_id = #{productId}
+    </delete>
+
     <select id="getListProductIdHistByUser" resultType="java.lang.Long">
-        select product_id
+        select distinct product_id
         from view_history
         where user_id = #{userId}
-        order by date_time desc
+        group by product_id
+        order by max(date_time) desc , product_id
         limit #{params.size}
         offset #{params.offset}
+    </select>
+
+    <select id="getList20ProductIdHistByUser" resultType="java.lang.Long">
+        select distinct product_id
+        from view_history
+        where user_id = #{userId}
+        group by product_id
+        order by max(date_time) desc , product_id
+        limit 100
+        offset 0
     </select>
 
     <select id="getViewHistCount" resultType="long">

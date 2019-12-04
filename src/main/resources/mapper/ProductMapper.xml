@@ -44,15 +44,16 @@
     </select>
 
     <select id="getRandomProduct" resultType="com.cs201.sendo.models.Product">
-        select product_id as productId,
-        sd_product_id as sdProductId,
-        cat_lv1_id as catLv1Id,
-        cat_lv2_id as catLv2Id,
-        cat_lv3_id as catLv3Id,
-        path_name as pathName,
-        alter_href as alterHref
-        from product
-        where product_id <![CDATA[ < ]]> 155000
+        select p.product_id as productId,
+        p.sd_product_id as sdProductId,
+        p.cat_lv1_id as catLv1Id,
+        p.cat_lv2_id as catLv2Id,
+        p.cat_lv3_id as catLv3Id,
+        p.path_name as pathName,
+        p.alter_href as alterHref
+        from product p
+        left join product_data pd on p.product_id = pd.product_id
+        where pd.price <![CDATA[ < ]]> pd.price_max
         order by RAND()
         <if test="pagingParams != null">
             limit ${pagingParams.size}
@@ -73,7 +74,7 @@
         path_name as pathName,
         alter_href as alterHref
         from product
-        where cat_lv2_id = #{catLv2Id}
+        where cat_lv2_id = #{catLv2Id} and product_id <![CDATA[ <> ]]> #{productId}
         limit 20
     </select>
 

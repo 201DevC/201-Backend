@@ -1,10 +1,9 @@
 package com.cs201.sendo.mappers;
 
 import com.cs201.sendo.models.UserViewCount;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface UserViewCountMapper {
@@ -21,4 +20,10 @@ public interface UserViewCountMapper {
     @Insert("insert into user_views_count (user_id, cat_lv2_id, count) " +
             "VALUES (#{userId}, #{cateLv2Id}, #{count})")
     void insertUserViewCount(UserViewCount viewCount);
+
+    @Update("update user_views_count set count = #{count} where user_id = #{userId} and cat_lv2_id = #{cateLv2Id}")
+    void hardUpdateUserViewCount(UserViewCount viewCount);
+
+    @Select("select cat_lv2_id from user_views_count where user_id = #{userId} and count > 0 order by count desc")
+    List<Long> getListMostInteractiveCategory(@Param("userId") Long userId);
 }

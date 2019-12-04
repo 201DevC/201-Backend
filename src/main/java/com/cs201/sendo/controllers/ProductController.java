@@ -53,8 +53,11 @@ public class ProductController {
 
     @GetMapping("/{productId}/relation")
     @ApiOperation(value = "Lấy danh sách sản phẩm liên quan của 1 sản phẩm cụ thể. Mặc định có 20 sản phẩm.")
-    public List<ProductData> getRelatedProduct(@PathVariable Long productId) {
-        return productService.getListRelatedProducts(productId);
+    public List<ProductData> getRelatedProduct(@PathVariable Long productId, @RequestParam(value = "userId", required = false) Long userId) {
+        if (userId == null || userId <= 0) {
+            throw new RuntimeException("Vui long truyen len userId");
+        }
+        return productService.getListRelatedProducts(productId, userId);
     }
 
     @GetMapping("/trend")
@@ -63,9 +66,18 @@ public class ProductController {
         return productService.getTrendingProducts();
     }
 
+    @GetMapping("/recommend")
+    @ApiOperation(value = "Lấy danh sách các sản phẩm được đề xuất")
+    public List<ProductData> getRecommendationProducts(@RequestParam(value = "userId", required = false) Long userId) {
+        return productService.getRecommendationProducts(userId);
+    }
+
     @GetMapping("/category/{categoryId}")
     public List<ProductData> getRecommendationByCategory2(@PathVariable Long categoryId) {
+
         return null;
         //return productService.getRecommendationByCategory2(categoryId);
     }
+
+
 }
