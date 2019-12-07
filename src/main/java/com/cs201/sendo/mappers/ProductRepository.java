@@ -20,7 +20,9 @@ public interface ProductRepository {
                                            @Param("cate3") Long cate3, @Param("pagingParams") PagingParams pagingParams,
                                            @Param("keyword") String keyword);
 
-    List<Product> getRandomProduct(PagingParams params);
+    List<Product> getRandomProduct(@Param("params") PagingParams params);
+
+    List<Product> getRandomProductForRecommend();
 
     List<Product> getListRelatedProduct(Product product);
 
@@ -30,10 +32,14 @@ public interface ProductRepository {
 
     List<ProductData> getProductDataByIds(@Param("ids") List<Long> ids);
 
+    ProductData getProductDataById (@Param("id") Long id);
+
     List<Product> getProductByIds(@Param("ids") List<Long> ids);
 
     Product getRecommendationByCategory2(@Param("categoryId") Long categoryId);
 
     List<Product> getSampleProductByCategories(@Param("catLv2Ids") List<Long> catLv2Ids);
+
+    List<Product> getProductsByCateLv3(@Param("cateLv3") Long aLong);
 
 }

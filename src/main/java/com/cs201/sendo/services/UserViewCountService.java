@@ -69,4 +69,8 @@ public class UserViewCountService {
         userViewCountMapper.hardUpdateUserViewCount(userViewCount);
 
     }
+
+    public void deleteAllUserViewsCount(Long id) {
+        userViewCountMapper.setUserViewCountToZero(id);
+    }
 }

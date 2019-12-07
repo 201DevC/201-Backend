@@ -54,14 +54,29 @@
         from product p
         left join product_data pd on p.product_id = pd.product_id
         where pd.price <![CDATA[ < ]]> pd.price_max
-        order by RAND()
-        <if test="pagingParams != null">
-            limit ${pagingParams.size}
-            offset ${pagingParams.offset}
+        order by RAND(now()) desc
+        <if test="params != null">
+            limit ${params.size}
+            offset ${params.offset}
         </if>
-        <if test="pagingParams == null">
+        <if test="params == null">
             limit 20
         </if>
+    </select>
+
+    <select id="getRandomProductForRecommend" resultType="com.cs201.sendo.models.Product">
+        select p.product_id as productId,
+        p.sd_product_id as sdProductId,
+        p.cat_lv1_id as catLv1Id,
+        p.cat_lv2_id as catLv2Id,
+        p.cat_lv3_id as catLv3Id,
+        p.path_name as pathName,
+        p.alter_href as alterHref
+        from product p
+        left join product_data pd on p.product_id = pd.product_id
+        where pd.price <![CDATA[ < ]]> pd.price_max
+        order by RAND(now()) * 10 desc
+        limit 20
     </select>
 
     <select id="getListRelatedProduct" resultType="com.cs201.sendo.models.Product"
@@ -79,17 +94,17 @@
     </select>
 
     <select id="getTrendingProducts" resultType="com.cs201.sendo.models.Product">
-        select product_id    as productId,
-               sd_product_id as sdProductId,
-               cat_lv1_id    as catLv1Id,
-               cat_lv2_id    as catLv2Id,
-               cat_lv3_id    as catLv3Id,
-               path_name     as pathName,
-               alter_href    as alterHref
-        from product
-        where product_id <![CDATA[ < ]]> 155000
-        order by RAND()
-        limit 20
+        select count(v.product_id), v.product_id as productId,
+               p.sd_product_id as sdProductId,
+               p.cat_lv1_id as catLv1Id,
+               p.cat_lv2_id as catLv2Id,
+               p.cat_lv3_id as catLv3Id,
+               p.path_name as pathName,
+               p.alter_href as alterHref
+        from view_history v
+                 left join product p on v.product_id = p.product_id
+        group by v.product_id
+        order by count(v.product_id) desc;
     </select>
 
     <select id="getProductById" resultType="com.cs201.sendo.models.Product">
@@ -169,7 +184,7 @@
         alter_href as alterHref
         from product
         where cat_lv2_id = #{categoryId}
-        order by RAND()
+        order by RAND(now())
         limit 1
     </select>
     <select id="getSampleProductByCategories" resultType="com.cs201.sendo.models.Product">
@@ -183,9 +198,55 @@
                 alter_href as alterHref
                 from product
                 where cat_lv2_id  = #{id}
-                order by rand()
+                order by rand(now())
                 limit 1)
             </foreach>
+    </select>
+    <select id="getProductDataById" resultMap="ProductDataMap">
+        select p.product_id as productId,
+               p.sendo_pid as sendoPid,
+               p.name as name,
+               p.images as images,
+               p.order_count as orderCount,
+               p.shop_info as shopInfo,
+               p.price as price,
+               p.price_max as priceMax,
+               p.short_description as shortDescription,
+               p.description as description,
+               s.id as s_id,
+               s.name as s_name,
+               s.image as s_image,
+               r.percent_star1 as r_percent_star1,
+               r.percent_star2 as r_percent_star2,
+               r.percent_star3 as r_percent_star3,
+               r.percent_star4 as r_percent_star4,
+               r.percent_star5 as r_percent_star5,
+               r.star1 as r_star1,
+               r.star2 as r_star2,
+               r.star3 as r_star3,
+               r.star4 as r_star4,
+               r.star5 as r_star5,
+               r.total_rated as r_total_rated,
+               r.percent_number as r_percent_number
+        from product_data p
+                 left join shop_info s on p.shop_info = s.id
+                 left join rating_info r on r.product_id = p.product_id
+        where
+            p.product_id = #{id}
+    </select>
+
+
+    <select id="getProductsByCateLv3" resultType="com.cs201.sendo.models.Product">
+        select product_id as productId,
+        sd_product_id as sdProductId,
+        cat_lv1_id as catLv1Id,
+        cat_lv2_id as catLv2Id,
+        cat_lv3_id as catLv3Id,
+        path_name as pathName,
+        alter_href as alterHref
+        from product
+        where product.cat_lv3_id = #{cateLv3}
+        limit 5
     </select>
 
     <resultMap id="ProductDataMap" type="com.cs201.sendo.models.ProductData">

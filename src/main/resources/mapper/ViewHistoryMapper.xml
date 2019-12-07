@@ -30,7 +30,12 @@
     <delete id="deleteViewHistory" parameterType="com.cs201.sendo.models.ViewHistory">
         delete from view_history
         where user_id = #{userId}
-        and  product_id = #{productId}
+        and product_id = #{productId}
+    </delete>
+
+    <delete id="deleteAllViewHistory">
+        delete from view_history
+        where user_id = #{id}
     </delete>
 
     <select id="getListProductIdHistByUser" resultType="java.lang.Long">

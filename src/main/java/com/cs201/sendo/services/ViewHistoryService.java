@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -53,9 +52,23 @@ public class ViewHistoryService {
     public Paging<ProductData> getViewHistoryByUser(Long id, PagingParams params) {
         Long countTotal = viewHistoryMapper.getViewHistCount(id);
         List<Long> listUserId = viewHistoryMapper.getListProductIdHistByUser(id, params);
+        if (listUserId == null || listUserId.size() <= 0) {
+            return Paging.of(new ArrayList<>(), countTotal, params);
+        }
         List<ProductData> listProductData = productService.getListProductDataByIds(listUserId);
 
-        return Paging.of(listProductData, countTotal, params);
+        List<ProductData> result = new ArrayList<>();
+
+        for (Long productId : listUserId) {
+            try {
+                int pos = Collections.binarySearch(listProductData, new ProductData(productId), (Comparator.comparing(ProductData::getId)));
+                result.add(listProductData.get(pos));
+            } catch (Exception e) {
+                log.error("Null Product");
+            }
+        }
+
+        return Paging.of(result, countTotal, params);
     }
 
     @Transactional
@@ -69,10 +82,13 @@ public class ViewHistoryService {
         }
     }
 
-    public void deleteAllViewHistory(ViewHistory viewHistory) {
-//        try {
-////            viewHistoryMapper.deleteAllViewHistory
-//        }
+    public void deleteAllViewHistory(Long id) {
+        try {
+            viewHistoryMapper.deleteAllViewHistory(id);
+            userViewCountService.deleteAllUserViewsCount(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error when delete all view history");
+        }
     }
 
     private void insertViewHistory(ViewHistory viewHistory) {

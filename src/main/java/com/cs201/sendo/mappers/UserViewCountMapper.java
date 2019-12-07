@@ -26,4 +26,7 @@ public interface UserViewCountMapper {
 
     @Select("select cat_lv2_id from user_views_count where user_id = #{userId} and count > 0 order by count desc")
     List<Long> getListMostInteractiveCategory(@Param("userId") Long userId);
+
+    @Update("update user_views_count set count = 0 where user_id = #{id}")
+    void setUserViewCountToZero(@Param("id") Long id);
 }

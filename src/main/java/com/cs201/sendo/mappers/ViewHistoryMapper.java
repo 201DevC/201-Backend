@@ -21,4 +21,6 @@ public interface ViewHistoryMapper {
     Long getViewHistCount(@Param("userId") Long id);
 
     void deleteViewHistory(@Param("userId") Long userId, @Param("productId") Long productId);
+
+    void deleteAllViewHistory(@Param("id") Long id);
 }

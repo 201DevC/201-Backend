@@ -53,6 +53,11 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("{id}/views")
+    public void deleteAllViewHistory(@PathVariable("id") Long id) {
+        viewHistoryService.deleteAllViewHistory(id);
+    }
+
     @DeleteMapping("/{id}/views/{productId}")
     public void deleteViewHistory(@PathVariable("id") Long id, @PathVariable("productId") Long productId) {
         viewHistoryService.deleteViewHistory(id, productId);

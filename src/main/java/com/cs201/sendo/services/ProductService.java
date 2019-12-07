@@ -61,6 +61,8 @@ public class ProductService {
                     log.error("Error when add recommend {}", e.getMessage(), e);
                 }
                 listRelatedProduct.addAll(productRepository.getListRelatedProduct(product));
+
+                listRelatedProduct = listRelatedProduct.stream().filter(Objects::nonNull).distinct().collect(Collectors.toList());
             }
             return this.getProductData(listRelatedProduct);
         } catch (Exception e) {
@@ -71,6 +73,10 @@ public class ProductService {
     public List<ProductData> getTrendingProducts() {
         try {
             List<Product> listRelatedProduct = productRepository.getTrendingProducts();
+            if (listRelatedProduct.size() < 20) {
+                List<Product> randomProduct = productRepository.getRandomProductForRecommend();
+                listRelatedProduct.addAll(randomProduct);
+            }
 
             return this.getProductData(listRelatedProduct);
         } catch (Exception e) {
@@ -78,11 +84,20 @@ public class ProductService {
         }
     }
 
+    public List<Product> getTrendingProduct() {
+        try {
+
+            List<Product> randomProduct = productRepository.getRandomProductForRecommend();
+
+            return new ArrayList<>(randomProduct);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
     public ProductData getProductDetail(Long productId) {
         try {
-            Product product = productRepository.getProductById(productId);
-
-            return productClient.getProduct(product);
+            return productRepository.getProductDataById(productId);
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -151,37 +166,48 @@ public class ProductService {
 //        productDataByIds.addAll(listProductData);
 
 
-        Map<Long, ProductData> productDataMap = productDataByIds.parallelStream().collect(Collectors.toMap(ProductData::getId, productData -> productData));
+        Map<Long, ProductData> productDataMap = productDataByIds.parallelStream().filter(Objects::nonNull).collect(Collectors.toMap(ProductData::getId, productData -> productData));
         List<ProductData> result = new ArrayList<>();
 
         for (Long id : ids) {
-            result.add(productDataMap.get(id));
+            ProductData productData = productDataMap.get(id);
+            if (productData != null) {
+                result.add(productData);
+            }
         }
         return result;
     }
 
     public List<ProductData> getRecommendationProducts(Long userId) {
+        try {
+            List<Product> result = new ArrayList<>();
+            List<Product> recommendationProducts = this.recommendService.getRecommendationProduct(userId);
 
-        List<Product> result = new ArrayList<>();
-        List<Product> recommendationProducts = this.recommendService.getRecommendationProduct(userId);
+            List<Long> listRecommendCat = this.recommendService.getListCategoryLv2(userId);
 
-        List<Long> listRecommendCat = this.recommendService.getListCategoryLv2(userId);
-
-        for (Product recommendationProduct : recommendationProducts) {
-            if (listRecommendCat.contains(recommendationProduct.getCatLv2Id())) {
-                if (!result.contains(recommendationProduct)) {
-                    result.add(recommendationProduct);
+            for (Product recommendationProduct : recommendationProducts) {
+                if (listRecommendCat.contains(recommendationProduct.getCatLv2Id())) {
+                    if (!result.contains(recommendationProduct)) {
+                        result.add(recommendationProduct);
+                    }
                 }
             }
-        }
 
-        PagingParams params = PagingParams.builder().offset(0L).size(5L).build();
-        for (Long aLong : listRecommendCat) {
-            List<Product> listProductByCategory = productRepository.getListProductByCategory(null, aLong, null, params, null);
-            result.addAll(listProductByCategory);
-        }
+            PagingParams params = PagingParams.builder().offset(0L).size(5L).build();
+            for (Long aLong : listRecommendCat) {
+                List<Product> listProductByCategory = productRepository.getListProductByCategory(null, aLong, null, params, null);
+                result.addAll(listProductByCategory);
+            }
 
-        return this.getProductData(result);
+            List<Product> trendingProducts = getTrendingProduct();
+            result.addAll(trendingProducts);
+
+            result = result.stream().filter(Objects::nonNull).distinct().collect(Collectors.toList());
+
+            return this.getProductData(result);
+        } catch (Exception e) {
+            return getTrendingProducts();
+        }
     }
 }
 
