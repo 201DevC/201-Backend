@@ -151,22 +151,12 @@ public class ProductService {
             products.get(i).setOrder(i);
             ids.add(products.get(i).getProductId());
         }
+
+        ids = ids.stream().distinct().collect(Collectors.toList());
+
         List<ProductData> productDataByIds = productRepository.getProductDataByIds(ids);
-//        List<Product> missingProduct = products.stream().filter(product ->
-//                productDataByIds.stream().noneMatch(productData -> productData.getId().equals(product.getProductId())))
-//                .collect(Collectors.toList());
-//
-//        List<ProductData> listProductData = new ArrayList<>();
-//        try {
-//            listProductData = productClient.getListProductData(missingProduct);
-//        } catch (Exception e) {
-//            log.error("Error {}", e.getMessage() , e);
-//        }
-//
-//        productDataByIds.addAll(listProductData);
 
-
-        Map<Long, ProductData> productDataMap = productDataByIds.parallelStream().filter(Objects::nonNull).collect(Collectors.toMap(ProductData::getId, productData -> productData));
+        Map<Long, ProductData> productDataMap = productDataByIds.parallelStream().filter(Objects::nonNull).distinct().collect(Collectors.toMap(ProductData::getId, productData -> productData));
         List<ProductData> result = new ArrayList<>();
 
         for (Long id : ids) {
